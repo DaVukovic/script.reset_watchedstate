@@ -71,7 +71,7 @@ for movie in data['result']['movies']:
         list_of_movies = list_of_movies + (movie['label'], )
         if not dryrun:
             set = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": { "movieid": %d, "playcount": 0, "lastplayed": "" }, "id": "libMovies"}' %movieid)
-            xbmc.log(str(set), level=LOGDEBUG)
+            xbmc.log(str(set), level=xbmc.LOGDEBUG)
     else:
         xbmc.log("no movie added", level=xbmc.LOGDEBUG)
 
