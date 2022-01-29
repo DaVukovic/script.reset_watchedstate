@@ -11,7 +11,7 @@
         <description lang="en_GB">Marks movies as unwatched and resets the lastpayed-date if a specific amount of days have been passed.</description>
         <description lang="de_DE">Markiert Filme als ungesehen und setzt das 'lastpayed'-Datum nach einer spezifischen Anzahl von Tagen zurück.</description>
         <platform>all</platform>
-        <license>GNU GENERAL PUBLIC LICENSE. Version 3, June 2007</license>
+        <license>GPL-2.0-only</license>
         <assets>
             <icon>resources/icon.png</icon>
         </assets>
