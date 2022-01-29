@@ -1,4 +1,4 @@
-from os import preadv
+import sys
 import xbmc
 import xbmcaddon
 import xbmcgui
@@ -21,12 +21,12 @@ prevent = SETTINGS.getBool('preventdialog')
 
 if not active:
     DIALOG.ok(ADDONNAME, LANGUAGE(32001))
-    exit()
+    sys.exit(0)
 else:
     if not dryrun and not prevent:
         ret = DIALOG.yesno(LANGUAGE(32005), LANGUAGE(32006))
         if not ret:
-            exit()
+            sys.exit(0)
 
 if dryrun and not prevent:
     DIALOG.ok(ADDONNAME, LANGUAGE(32002))
@@ -79,6 +79,6 @@ if not list_of_movies:
     if not prevent:
         DIALOG.ok(ADDONNAME, LANGUAGE(32003))
     else:
-        exit()
+        sys.exit(0)
 else:
     DIALOG.ok(ADDONNAME, LANGUAGE(32004) +str(list_of_movies))
