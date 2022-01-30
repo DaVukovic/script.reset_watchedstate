@@ -9,30 +9,37 @@ import json
 ADDON = xbmcaddon.Addon()
 ADDONID = ADDON.getAddonInfo('id')
 ADDONNAME = ADDON.getAddonInfo('name')
-SETTINGS = xbmcaddon.Addon().getSettings()
 LANGUAGE = ADDON.getLocalizedString
 DIALOG = xbmcgui.Dialog()
 
-
 def getSettings():
-    # read settings and make them available for other functions
-    getSettings.active = SETTINGS.getBool('active')
-    getSettings.dryrun = SETTINGS.getBool('dryrun')
-    getSettings.number_of_days = SETTINGS.getInt('numberofdays')
-    getSettings.prevent = SETTINGS.getBool('preventdialog')
+    build = xbmc.getInfoLabel('System.BuildVersionShort')
+    if float(build) >= 20.0:
+        # read settings for v20
+        SETTINGS = xbmcaddon.Addon().getSettings()
+        getSettings.active = SETTINGS.getBool('active')
+        getSettings.dryrun = SETTINGS.getBool('dryrun')
+        getSettings.number_of_days = SETTINGS.getInt('numberofdays')
+        getSettings.prevent = SETTINGS.getBool('preventdialog')
+    else:
+        # read settings for v19
+        getSettings.active = ADDON.getSettingBool('active')
+        getSettings.dryrun = ADDON.getSettingBool('dryrun')
+        getSettings.number_of_days = ADDON.getSettingInt('numberofdays')
+        getSettings.prevent = ADDON.getSettingBool('preventdialog')
 
 def getCurrentDate():
     now = datetime.now()
     return now
     #now2 = now + timedelta(days=3)
     #kodi_time = now.strftime("%Y-%m-%d %H:%M:%S")
-    
+
 def getFakeDate():
     # this is only use for testing purposes
     now = datetime.now()
     now2 = now + timedelta(days=3)
     return now2
-    
+
 
 def getJSON():
     # this is the json we work with
@@ -44,12 +51,12 @@ def getJSON():
 
 
 def main():
-    list_of_movies=()
+    list_of_movies = ()
     getSettings()
-    date = getFakeDate()
-    #date = getCurrentDate()
+    #date = getFakeDate()
+    date = getCurrentDate()
     data = getJSON()
-    
+
     if not getSettings.active:
         DIALOG.ok(ADDONNAME, LANGUAGE(32001))
         sys.exit(0)
@@ -75,7 +82,7 @@ def main():
         label = movie['label']
 
         # if lastplayed value is not empty
-        xbmc.log("Checking: " + label, level=xbmc.LOGDEBUG)     
+        xbmc.log("Checking: " + label, level=xbmc.LOGDEBUG)
         if not last_p:
             continue
         xbmc.log("last: " + last_p, level=xbmc.LOGDEBUG)
