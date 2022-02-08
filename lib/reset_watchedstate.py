@@ -33,8 +33,6 @@ def getSettings():
 def getCurrentDate():
     now = datetime.now()
     return now
-    #now2 = now + timedelta(days=3)
-    #kodi_time = now.strftime("%Y-%m-%d %H:%M:%S")
 
 def getFakeDate():
     # this is only use for testing purposes
@@ -84,10 +82,10 @@ def main():
         label = movie['label']
 
         # if lastplayed value is not empty
-        xbmc.log("Checking: " + label, level=xbmc.LOGDEBUG)
+        xbmc.log("Reset_Watchedstate Checking: " + label, level=xbmc.LOGDEBUG)
         if not last_p:
             continue
-        xbmc.log("last: " + last_p, level=xbmc.LOGDEBUG)
+        xbmc.log("Reset_Watchedstate last_played:: " + last_p, level=xbmc.LOGDEBUG)
         # format string to date
         try:
             last_date = datetime.strptime(last_p, "%Y-%m-%d %H:%M:%S")
@@ -95,17 +93,17 @@ def main():
             last_date = datetime(*(time.strptime(last_p, "%Y-%m-%d %H:%M:%S")[0:6]))
         # add 365 to lasteplayed date
         lastp_plus_year = last_date + timedelta(days=getSettings.number_of_days)
-        xbmc.log("plus one year: " + str(lastp_plus_year), level=xbmc.LOGDEBUG)
+        xbmc.log("Reset_Watchedstate plus one year: " + str(lastp_plus_year), level=xbmc.LOGDEBUG)
         # check if lastplayed + 'number_of_days' is lower than then the current date
         if lastp_plus_year < date:
-            xbmc.log("added: " + str(movie['label']), level=xbmc.LOGDEBUG)
+            xbmc.log("Reset_Watchedstate added: " + str(movie['label']), level=xbmc.LOGDEBUG)
             #ans=movie['label']
             list_of_movies = list_of_movies + (movie['label'], )
             if not getSettings.dryrun:
                 set = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.SetMovieDetails", "params": { "movieid": %d, "playcount": 0, "lastplayed": "" }, "id": "libMovies"}' %movieid)
-                xbmc.log(str(set), level=xbmc.LOGDEBUG)
+                xbmc.log("Reset_Watchedstate: " + str(set), level=xbmc.LOGDEBUG)
         else:
-            xbmc.log("no movie added", level=xbmc.LOGDEBUG)
+            xbmc.log("Reset_Watchedstate no movie added", level=xbmc.LOGDEBUG)
 
     if not list_of_movies:
         if not getSettings.prevent:
